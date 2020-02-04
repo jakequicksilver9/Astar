@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.4/pixi.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="js\draw.js"></script>
   <script src="js\polygon.js"></script>
   <script src="js\graph.js"></script>
@@ -11,6 +12,24 @@
 
 <body style="text-align: center">
   <script src="js\main.js"></script>
+  <div>
+  <button onclick="var inc = true">square</button>
+    
+  </div>
+  
 </body>
+<script type="text/javascript">
+  $(document).ready( function() {
+    
+    document.addEventListener("click",function(e){
+      if(inc){
+        mouseposition = app.renderer.plugins.interaction.mouse.global;
+        var x = Math.round(mouseposition.x)
+        var y = Math.round(mouseposition.y)
+        console.log("{x: " + x + ", y: " + y + "}");
+      }
+    })
+  });
 
+</script>
 </html>

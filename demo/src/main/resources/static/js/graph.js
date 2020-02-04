@@ -25,7 +25,7 @@ function lineIntersects (p0, p1, p2, p3) {
     const dy = dst.y - src.y
     const dr2 = dx * dx + dy * dy
     const vect = (src.x - o.x) * (dst.y - o.y) - (dst.x - o.x) * (src.y - o.y)
-    const discr = (o.radius + extraSpace) * (o.radius + extraSpace) * dr2 - vect * vect
+    const discr = o.radius * o.radius * dr2 - vect * vect
     if (discr > 0) {
       var sy = dy > 0 ? 1 : -1
       var sqrtDiscr = Math.sqrt(discr)
@@ -66,11 +66,15 @@ function lineIntersects (p0, p1, p2, p3) {
   
     const graph = {}
     coords.forEach(src => {
-      const srcPoly = polygon(src)
-  
+      
+      
+        const srcPoly = polygon(src)
+      
       // Centers can also reach any visible vertices
-      srcPoly.push(src)
-  
+      if(src.sg){
+        srcPoly.push(src)
+      }
+      
       srcPoly.forEach(srcP => {
         allVertices
           .filter(c => c.x !== srcP.x || c.y !== srcP.y)

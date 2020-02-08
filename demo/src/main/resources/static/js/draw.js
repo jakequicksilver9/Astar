@@ -70,7 +70,7 @@ function drawShapes (stage) {
     else{
       var center = findcenter(c.manual);
       graphics.beginFill(0xDE3249)
-      var sortedPoints = c.manual.sort((a,b) => SortClockwise(a,b, center))
+      var sortedPoints = c.manual.sort((a,b) => SortClockwise (a,b, center))
       graphics.moveTo(sortedPoints[0].x, sortedPoints[0].y)
       sortedPoints.forEach(pair=>{graphics.lineTo(pair.x, pair.y)})
     }

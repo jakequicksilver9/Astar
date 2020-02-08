@@ -1,3 +1,4 @@
+//enviroment by codinGame
 
 const pentagon = [
   {x: 150, y: 20},  //top           //1
@@ -82,7 +83,7 @@ function main () {
   const graph = buildGraph()
   drawGraph(app.stage, graph)
   drawShapes(app.stage)
-  const path = shortestPath(graph, coords[0], coords[1])
+  const path = aStar(graph, coords[0], coords[1])
   drawPath(app.stage, path)
 }
 

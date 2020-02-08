@@ -1,5 +1,3 @@
-//enviroment by codinGame
-
 const pentagon = [
   {x: 150, y: 20},  //top           //1
   {x: 80, y: 160},  //bottom left   //2

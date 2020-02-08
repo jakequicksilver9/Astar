@@ -1,3 +1,4 @@
+//enviroment by codinGame
 function lineIntersects (p0, p1, p2, p3) {
     var s1x = p1.x - p0.x
     var s1y = p1.y - p0.y

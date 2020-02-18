@@ -85,5 +85,5 @@ function main () {
   drawPath(app.stage, path)
 }
 
-main()
+
 

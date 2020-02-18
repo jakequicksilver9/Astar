@@ -8,34 +8,39 @@
   <script src="js\polygon.js"></script>
   <script src="js\graph.js"></script>
   <script src="js\path.js"></script>
-  <script src="js\Queue.js"></script>
 </head>
 
 <body style="text-align: center">
   <script src="js\main.js"></script>
   <div>
-  <button id="square">square</button>
-    
+    <button id="run" onclick="main()">GO!</button>
+    <button onclick="document.body.removeChild(app.view)">CLEAR</button>
+  </div>
+  <div>
+    <select>
+      <option disabled selected>Please Select an Enviroment</option>
+      <option>Figure 3.31</option>
+      <option>New Enviroment</option>
+    </select>
   </div>
   
 </body>
 <script type="text/javascript">
   $(document).ready( function() {
-    
-    var btn = document.getElementById("square")
-    btn.addEventListener("click", clicd )
+    // var btn = document.getElementById("square")
+    // btn.addEventListener("click", clicd )
 
-    function clicd(){
-        var clic = true
-    }
-    document.addEventListener("click",function(e){
-      if(clic){
-        mouseposition = app.renderer.plugins.interaction.mouse.global;
-        var x = Math.round(mouseposition.x)
-        var y = Math.round(mouseposition.y)
-        console.log("{x: " + x + ", y: " + y + "}");
-      }
-    })
+    // function clicd(){
+    //     var clic = true
+    // }
+    // document.addEventListener("click",function(e){
+    //   if(clic){
+    //     mouseposition = app.renderer.plugins.interaction.mouse.global;
+    //     var x = Math.round(mouseposition.x)
+    //     var y = Math.round(mouseposition.y)
+    //     console.log("{x: " + x + ", y: " + y + "}");
+    //   }
+    // })
   });
 
 </script>

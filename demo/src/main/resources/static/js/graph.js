@@ -53,13 +53,13 @@ function lineIntersects (p0, p1, p2, p3) {
     return false
   }
   
-  function directPath (src, dst) {
+  function directPath (src, dst, coords) {
     return coords
       .filter(o => src !== o)
       .every(o => !lineCircleIntersection(src, dst, o) && !linePolygonIntersection(src, dst, o))
   }
   
-  function buildGraph () {
+  function buildGraph (coords) {
     // Add edge from each vertex to all visible vertex
     const allVertices = coords
       .map(dst => polygon(dst))
@@ -75,12 +75,12 @@ function lineIntersects (p0, p1, p2, p3) {
       if(src.sg){
         srcPoly.push(src)
       }
-      
+      //check if inside shape before push   
       srcPoly.forEach(srcP => {
         allVertices
           .filter(c => c.x !== srcP.x || c.y !== srcP.y)
           .forEach(c => {
-            if (directPath(srcP, c)) {
+            if (directPath(srcP, c, coords)) {
               const key = `${srcP.x} ${srcP.y}`
               if (graph[key] == null) {
                 graph[key] = []

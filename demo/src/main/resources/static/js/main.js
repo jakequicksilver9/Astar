@@ -55,7 +55,7 @@ const kite = [
   {x: 530, y: 30},
 ]
 
-const coords = [
+const enviroment1 = [
   {x: 40, y: 250, sg:true },    //start
   {x: 550, y: 30, sg:true },   //goal
   {n:5, manual:pentagon }, 
@@ -68,22 +68,98 @@ const coords = [
   {manual: kite, n:4 },
 ]
 
-const app = new PIXI.Application({
-  width: 650,
-  height: 300,
-  antialias: true,
-  backgroundColor:0x5CC569
-})
+const shape1 = [
+  {x: 271, y: 140},
+  {x: 346, y: 122},
+  {x: 323, y: 190},
+]
 
-function main () {
-  document.body.appendChild(app.view)
-  app.view.style.width = '85%'
-  const graph = buildGraph()
-  drawGraph(app.stage, graph)
-  drawShapes(app.stage)
-  const path = aStar(graph, coords[0], coords[1])
-  drawPath(app.stage, path)
+const shape2 = [
+  {x: 102, y: 99},
+  {x: 93, y: 250},
+  {x: 158, y: 111},
+  {x: 152, y: 254},
+]
+
+const shape3 = [
+  {x: 395, y: 110},
+  {x: 427, y: 11},
+  {x: 391, y: 282},
+  {x: 415, y: 280},
+]
+
+const shape4 = [
+  {x: 197, y: 32}, 
+  {x: 235, y: 28}, 
+  {x: 275, y: 117},
+  {x: 262, y: 57}, 
+  {x: 199, y: 78}, 
+  {x: 225, y: 130},
+]
+
+const shape5 = [
+  {x: 465, y: 72},
+  {x: 511, y: 12},
+  {x: 517, y: 65},
+]
+
+const shape6 = [
+  {x: 424, y: 183},
+  {x: 542, y: 123},
+  {x: 445, y: 119},
+  {x: 585, y: 170},
+]
+
+const enviroment2 = [
+  {x:69, y:11, sg:true },    //start
+  {x:608, y:163, sg:true },   //goal
+  {manual:shape1, n:3}, 
+  {manual:shape2, n:4}, 
+  {manual:shape3, n:4},
+  {manual:shape4, n:6},
+  {manual:shape5, n:3},
+  {manual:shape6, n:4},
+]
+
+function Create(){
+  var app = new PIXI.Application({
+    width: 650,
+    height: 300,
+    antialias: true,
+    backgroundColor:0x5CC569
+  })
+  return app
 }
 
+function main () {
+  switch($('#envirnoment').val()){
+    case "1":{
+      var coordinates = enviroment1
+      break
+    }
+    case "2":{
+      var coordinates = enviroment2
+      break
+    }
+  }
+  if ($('canvas')) Clear()
+  var app = Create()
+  document.body.appendChild(app.view)
+  app.view.style.width = '85%'
+  const graph = buildGraph(coordinates)
+  drawGraph(app.stage, graph)
+  if ($('#fill').is(':checked')) drawShapes(app.stage, coordinates)
+  const path = aStar(graph, coordinates[0], coordinates[1], coordinates)
+  drawPath(app.stage, path)
 
+  document.addEventListener("click",function(e){
+    mouseposition = app.renderer.plugins.interaction.mouse.global;
+    var x = Math.round(mouseposition.x)
+    var y = Math.round(mouseposition.y)
+    console.log("{x: " + x + ", y: " + y + "}");
+})
+}
 
+function Clear(){
+  $('canvas').remove()
+}

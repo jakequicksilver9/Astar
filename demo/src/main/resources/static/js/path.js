@@ -19,7 +19,7 @@ function distance (a, b) {
     else return false
   }
 
-function aStar (graph, srcNode, dstNode) {
+function aStar (graph, srcNode, dstNode, coords) {
   const start = {x:srcNode.x, y:srcNode.y}
   const goal = {x:dstNode.x, y:dstNode.y}
   const open = new PriorityQueue((a, b) => a.g + a.h < b.g + b.h )
@@ -33,8 +33,11 @@ function aStar (graph, srcNode, dstNode) {
     var currentCoords = {x: current.x, y:current.y}
     closed.push(current)                      //add n best to closed
 
+    
+
+
     // n best == goal?
-    if (directPath(goal, currentCoords)) {       
+    if (directPath(goal, currentCoords, coords)) {       
       return [...current.path,dstNode]        //end
     }
     

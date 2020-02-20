@@ -1,4 +1,4 @@
-function drawPolygons (stage) {
+function drawPolygons (stage, coords) {
   coords.forEach(c => {
     const p = polygon(c)
 
@@ -58,7 +58,7 @@ function findcenter (pts) {
   return {x: x/pts.length, y:y/pts.length};
 }
 
-function drawShapes (stage) {
+function drawShapes (stage, coords) {
   coords.forEach(c => {
     const graphics = new PIXI.Graphics()
     if (c.sg){

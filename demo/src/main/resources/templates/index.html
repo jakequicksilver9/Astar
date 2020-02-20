@@ -14,19 +14,23 @@
   <script src="js\main.js"></script>
   <div>
     <button id="run" onclick="main()">GO!</button>
-    <button onclick="document.body.removeChild(app.view)">CLEAR</button>
+    <button onclick="Clear()">CLEAR</button>
   </div>
   <div>
-    <select>
-      <option disabled selected>Please Select an Enviroment</option>
-      <option>Figure 3.31</option>
-      <option>New Enviroment</option>
+    <select id="envirnoment">
+      <option value="1" >Figure 3.31</option>
+      <option value="2" selected>New Enviroment</option>
     </select>
+    <label>C Value: </label><input id="Cval">
+  <div>
+    <label>show fill: </label><input checked id="fill" type="checkbox">
+  </div>
   </div>
   
 </body>
 <script type="text/javascript">
   $(document).ready( function() {
+    main()
     // var btn = document.getElementById("square")
     // btn.addEventListener("click", clicd )
 
@@ -34,12 +38,10 @@
     //     var clic = true
     // }
     // document.addEventListener("click",function(e){
-    //   if(clic){
     //     mouseposition = app.renderer.plugins.interaction.mouse.global;
     //     var x = Math.round(mouseposition.x)
     //     var y = Math.round(mouseposition.y)
     //     console.log("{x: " + x + ", y: " + y + "}");
-    //   }
     // })
   });
 

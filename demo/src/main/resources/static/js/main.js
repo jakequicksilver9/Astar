@@ -149,8 +149,8 @@ function main () {
   const graph = buildGraph(coordinates)
   drawGraph(app.stage, graph)
   if ($('#fill').is(':checked')) drawShapes(app.stage, coordinates)
-  const path = aStar(graph, coordinates[0], coordinates[1], coordinates)
-  drawPath(app.stage, path)
+  const path = potentialSearch(graph, coordinates[0], coordinates[1], coordinates)
+  if (path != null) drawPath(app.stage, path)
 
   document.addEventListener("click",function(e){
     mouseposition = app.renderer.plugins.interaction.mouse.global;

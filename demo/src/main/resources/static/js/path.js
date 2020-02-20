@@ -20,10 +20,10 @@ function distance (a, b) {
   }
 
 function aStar (graph, srcNode, dstNode, coords) {
-  const start = {x:srcNode.x, y:srcNode.y}
-  const goal = {x:dstNode.x, y:dstNode.y}
-  const open = new PriorityQueue((a, b) => a.g + a.h < b.g + b.h )
-  const closed = []
+  var start = {x:srcNode.x, y:srcNode.y}
+  var goal = {x:dstNode.x, y:dstNode.y}
+  var open = new PriorityQueue((a, b) => a.g + a.h < b.g + b.h )
+  var closed = []
   //start
   open.push({x:srcNode.x, y:srcNode.y, g: 0, h: 0, path: [srcNode]})
 
@@ -32,9 +32,6 @@ function aStar (graph, srcNode, dstNode, coords) {
     var current = open.pop()                  //pick n best and remove from open
     var currentCoords = {x: current.x, y:current.y}
     closed.push(current)                      //add n best to closed
-
-    
-
 
     // n best == goal?
     if (directPath(goal, currentCoords, coords)) {       
@@ -56,13 +53,76 @@ function aStar (graph, srcNode, dstNode, coords) {
         if (comparePoints(x[t], open._heap[z]))  b = false                                                                  
       }
       if (b){
-        const costToGoal = distance(x[t], goal)
-        const newPath = current.path.slice()
+        var costToGoal = distance(x[t], goal)
+        var newPath = current.path.slice()
         newPath.push({ x: x[t].x, y: x[t].y })
-        const distToCurrent = distance(x[t], current)
+        var distToCurrent = distance(x[t], current)
         open.push({x:x[t].x, y:x[t].y, g: current.g + distToCurrent, h: costToGoal, path: newPath})                            //add x to open
       }
     }
   }
+}
+
+function contains(array, node){
+  for (var i = 0; i< array.length; i++){
+    if (array[i].x == node.x  &&  array[i] == node.y) return true
+  }
+}
+
+function potentialSearch (graph, srcNode, dstNode, coords) {
+  var c = $('#Cval').val()
+  var start = {x:srcNode.x, y:srcNode.y}
+  var goal = {x:dstNode.x, y:dstNode.y}
+  var open = new PriorityQueue((a, b) => a.g + a.h < b.g + b.h )
+  var closed = []
+  //start
+  open.push({x:srcNode.x, y:srcNode.y, g: 0, h: 0, path: [srcNode]})
+
+  //open is empty?
+  while(!open.isEmpty()){                     
+    var current = open.pop()                  //pick n best and remove from open
+    var currentCoords = {x: current.x, y:current.y}
+    closed.push(current)                      //add n best to closed
+    
+    
+    //expand all nodes x that are neighbors of n best 
+    var x = actions(current.x, current.y, graph)
+
+     // Duplicate detection
+    for (let node of x){      
+      if (contains(open, node) || contains(closed, node)){
+        if (node.g >= current.g + distance(current, node)) continue 
+      }
+
+      // updating g(n')
+      node.g = current.g + distance(current, node)  //what is c func?
+
+      // Prune nodes over the bound
+      if (node.h == null){    //(if h is inadmissible, check instead if g(n') >=C
+        if (node.g >= c) continue
+      }
+      if (node.g + node.h >= c){ debugger;continue}
+
+      // If found a solution below the bound - return it
+      if (comparePoints(node, goal)){
+        return [...current.path,dstNode]
+      }
+
+      // Add n' to OPEN or update its location
+      if (contains(open, node)){
+        continue
+      }else{
+        // open.push(node)
+        var costToGoal = distance(node, goal)
+        var newPath = current.path.slice()
+        newPath.push({ x: node.x, y: node.y })
+        var distToCurrent = distance(node, current)
+        open.push({x:node.x, y:node.y, g: current.g + distToCurrent, h: costToGoal, path: newPath})  
+      }
+
+    }
+  }
+  alert("no solution exists under the cost bound")
+  return null
 }
 

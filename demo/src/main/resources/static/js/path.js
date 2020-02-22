@@ -73,7 +73,9 @@ function potentialSearch (graph, srcNode, dstNode, coords) {
   var c = $('#Cval').val()
   var start = {x:srcNode.x, y:srcNode.y}
   var goal = {x:dstNode.x, y:dstNode.y}
-  var open = new PriorityQueue((a, b) => a.g + a.h < b.g + b.h )
+  // var open = new PriorityQueue((a, b) => a.g + a.h < b.g + b.h )
+  var open = new PriorityQueue((a, b) => (c- a.g) / a.h < (c - b.g) / b.h )    //should use this
+
   var closed = []
   //start
   open.push({x:srcNode.x, y:srcNode.y, g: 0, h: 0, path: [srcNode]})
@@ -84,7 +86,7 @@ function potentialSearch (graph, srcNode, dstNode, coords) {
     var currentCoords = {x: current.x, y:current.y}
     closed.push(current)                      //add n best to closed
     
-    
+    if (current.h == 0) current.h = 100000000
     //expand all nodes x that are neighbors of n best 
     var x = actions(current.x, current.y, graph)
 
@@ -97,11 +99,14 @@ function potentialSearch (graph, srcNode, dstNode, coords) {
       // updating g(n')
       node.g = current.g + distance(current, node)  //what is c func?
 
+      var g = current.g + distance(current, node)  
+      var h = distance(node, goal)
+
       // Prune nodes over the bound
-      if (node.h == null){    //(if h is inadmissible, check instead if g(n') >=C
-        if (node.g >= c) continue
+      if (h == null){    //(if h is inadmissible, check instead if g(n') >=C
+        if (g >= c) continue
       }
-      if (node.g + node.h >= c){ debugger;continue}
+      if (g + h >= c){continue}
 
       // If found a solution below the bound - return it
       if (comparePoints(node, goal)){
@@ -110,14 +115,26 @@ function potentialSearch (graph, srcNode, dstNode, coords) {
 
       // Add n' to OPEN or update its location
       if (contains(open, node)){
+        node.g = g
+        node.h = h
+        var openCopy = []
+        for (let nod of open._heap){
+          var y = open.pop()
+          openCopy.push(y)
+        }
+        for (let nod of openCopy){
+          open.push(nod)
+        }
         continue
       }else{
         // open.push(node)
         var costToGoal = distance(node, goal)
+        if (costToGoal == 0) costToGoal = 100000000
         var newPath = current.path.slice()
         newPath.push({ x: node.x, y: node.y })
         var distToCurrent = distance(node, current)
-        open.push({x:node.x, y:node.y, g: current.g + distToCurrent, h: costToGoal, path: newPath})  
+        // open.push({x:node.x, y:node.y, g: current.g + distToCurrent, h: costToGoal, path: newPath}) 
+        open.push({x:node.x, y:node.y, g: g, h: h, path: newPath}) 
       }
 
     }

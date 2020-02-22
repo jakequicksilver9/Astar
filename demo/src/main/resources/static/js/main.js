@@ -76,9 +76,9 @@ const shape1 = [
 
 const shape2 = [
   {x: 102, y: 99},
+  {x: 152, y: 254},
   {x: 93, y: 250},
   {x: 158, y: 111},
-  {x: 152, y: 254},
 ]
 
 const shape3 = [

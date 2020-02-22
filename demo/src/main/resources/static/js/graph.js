@@ -10,9 +10,31 @@ function lineIntersects (p0, p1, p2, p3) {
   
     return s > 0 && s < 1 && t > 0 && t < 1
   }
-  
+  //check line center intersection
+  function lineIntersectsCenter(c, a, b){
+    var bc = distance(c,b)
+    var ac = distance(a,c)
+    var acAndbc = bc + ac
+    var ab = distance(a,b)
+    var bool = Math.round(acAndbc) == Math.round(ab)
+    return bool
+  }
   function linePolygonIntersection (src, dst, o) {
     var c = polygon(o)
+    if (o.manual){
+      var center = findcenter(o.manual);
+      var sortedPoints = o.manual.sort((a,b) => SortClockwise (a,b, center))
+      for (var k = 0; k < sortedPoints.length; k++) {
+        if (lineIntersects(sortedPoints[k], sortedPoints[(k + 1) % sortedPoints.length], src, dst)) {
+          return true
+        }
+        // if (lineIntersectsCenter(center, sortedPoints[k], sortedPoints[(k + 1) % sortedPoints.length])){
+        //   debugger
+        //   return true
+        // }
+      }
+      return false
+    }
     for (var k = 0; k < c.length; k++) {
       if (lineIntersects(c[k], c[(k + 1) % c.length], src, dst)) {
         return true
@@ -60,6 +82,30 @@ function lineIntersects (p0, p1, p2, p3) {
   }
   
   function buildGraph (coords) {
+
+    var centers = []
+    for (let shape of coords){
+      if (shape.manual){
+        var center = findcenter(shape.manual);
+        var sortedshape = shape.manual.sort((a,b) => SortClockwise (a,b, center))
+        centers.push(center)
+        for (let point1 of sortedshape){
+          for (let point2 of sortedshape){
+            var length = sortedshape.length
+            var firstLast = sortedshape.indexOf(point1) == 0 && sortedshape.indexOf(point2) == length-1
+            var lastFirst = sortedshape.indexOf(point1) == length-1  && sortedshape.indexOf(point2) == 0
+            var loopCheck = firstLast && lastFirst
+            if (sortedshape.indexOf(point1) != sortedshape.indexOf(point2) && sortedshape.indexOf(point1) != sortedshape.indexOf(point2) +1 && sortedshape.indexOf(point1) != sortedshape.indexOf(point2) -1 && !lastFirst && !firstLast){
+              var points = [point1, point2]
+              var middle = findcenter(points)
+              centers.push(middle)
+            }
+          }
+        }
+      }
+    }
+
+
     // Add edge from each vertex to all visible vertex
     const allVertices = coords
       .map(dst => polygon(dst))
@@ -75,7 +121,8 @@ function lineIntersects (p0, p1, p2, p3) {
       if(src.sg){
         srcPoly.push(src)
       }
-      //check if inside shape before push   
+      //check if inside shape before push  
+       
       srcPoly.forEach(srcP => {
         allVertices
           .filter(c => c.x !== srcP.x || c.y !== srcP.y)
@@ -85,7 +132,13 @@ function lineIntersects (p0, p1, p2, p3) {
               if (graph[key] == null) {
                 graph[key] = []
               }
-              graph[key].push(c)
+              var centerCheck = true
+              for (let point of centers){
+                if (lineIntersectsCenter(point, srcP, c)){
+                  centerCheck = false
+                }
+              }
+              if (centerCheck) graph[key].push(c)
             }
           })
       })

@@ -4,20 +4,21 @@ function distance (a, b) {
   return Math.sqrt(squareDistance(a, b))
 }
   
-  function squareDistance (a, b) {
-    return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)
-  }
-  function actions(x ,y , graph){
-    var vectors = graph[`${x} ${y}`]
-    return vectors
-  }
+function squareDistance (a, b) {
+  return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)
+}
 
-  function comparePoints(a, b){
-    if (typeof a === 'undefined') return false
-    if (typeof b === 'undefined') return false
-    if (a.x == b.x && a.y == b.y) return true
-    else return false
-  }
+function actions(x ,y , graph){
+  var vectors = graph[`${x} ${y}`]
+  return vectors
+}
+
+function comparePoints(a, b){
+  if (typeof a === 'undefined') return false
+  if (typeof b === 'undefined') return false
+  if (a.x == b.x && a.y == b.y) return true
+  else return false
+}
 
 function aStar (graph, srcNode, dstNode, coords) {
   var start = {x:srcNode.x, y:srcNode.y}

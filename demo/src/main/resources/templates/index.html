@@ -1,17 +1,8 @@
 <html>
-
 <head>
   <meta charset="UTF-8">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.4/pixi.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="js\draw.js"></script>
-  <script src="js\polygon.js"></script>
-  <script src="js\graph.js"></script>
-  <script src="js\path.js"></script>
 </head>
-
 <body style="text-align: center">
-  <script src="js\main.js"></script>
   <div>
     <button id="run" onclick="main()">GO!</button>
     <button onclick="Clear()">CLEAR</button>
@@ -22,28 +13,21 @@
       <option value="2" selected>New Enviroment</option>
     </select>
     <label>C Value: </label><input id="Cval">
-  <div>
-    <label>show fill: </label><input checked id="fill" type="checkbox">
+    <div>
+      <label>show fill: </label><input checked id="fill" type="checkbox">
+    </div>
   </div>
-  </div>
-  
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.4/pixi.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="js\draw.js"></script>
+<script src="js\polygon.js"></script>
+<script src="js\graph.js"></script>
+<script src="js\path.js"></script>
+<script src="js\main.js"></script>
 <script type="text/javascript">
   $(document).ready( function() {
-    // main()
-    // var btn = document.getElementById("square")
-    // btn.addEventListener("click", clicd )
-
-    // function clicd(){
-    //     var clic = true
-    // }
-    // document.addEventListener("click",function(e){
-    //     mouseposition = app.renderer.plugins.interaction.mouse.global;
-    //     var x = Math.round(mouseposition.x)
-    //     var y = Math.round(mouseposition.y)
-    //     console.log("{x: " + x + ", y: " + y + "}");
-    // })
+    
   });
-
 </script>
 </html>

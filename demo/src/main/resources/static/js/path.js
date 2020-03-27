@@ -144,3 +144,73 @@ function potentialSearch (graph, srcNode, dstNode, coords) {
   return null
 }
 
+function simplifiedAnyTimeRepairingAStar (graph, srcNode, dstNode, coords) {
+  var w = $('#Cval').val() //reusing Cval input
+  var wDelta = 5 //the amount by which w is decreased in every iteration
+  var G = 100000 //cost of incumbent, starts at infinity(100,000 lol)
+  var start = {x:srcNode.x, y:srcNode.y}
+  var goal = {x:dstNode.x, y:dstNode.y}
+  var open = new PriorityQueue((a, b) => a.g + a.h < b.g + b.h )
+  open.push({x:srcNode.x, y:srcNode.y, g: 0, h: 0, path: [srcNode]})
+  var closed = []
+  var incumbent
+
+  //open is empty?
+  while(!open.isEmpty()){                     
+    var newSolution = improveSolution(open, w, G, goal, coords, graph)
+    debugger
+    if (!newSolution == null){
+      G = cost(newSolution)
+      incumbent = newSolution
+    }
+    else{
+      return incumbent
+    }
+    w = w - wDelta
+    //update open
+  }
+}
+
+function improveSolution(open , w, G, goal, coords, graph) {
+  var closed = []
+  while(!open.isEmpty()){                     
+    var current = open.pop()                  //pick n best and remove from open
+    var currentCoords = {x: current.x, y:current.y}
+    closed.push(current)                      //add n best to closed
+
+    if (G <= current.g + w * current.h) return null
+
+    // n best == goal?
+    if (directPath(goal, currentCoords, coords)) {       
+      return [...current.path,dstNode]        //end
+    }
+    
+    //expand all nodes x that are neighbors of n best 
+    var x = actions(current.x, current.y, graph)
+
+    //remove nodes also present in closed
+    for (var i = 0; i<x.length; i++){
+      for (var j = 0; j<closed.length; j++){
+        if (comparePoints(x[i], closed[j]))  x.splice(i,1)      
+      }
+    }
+
+    for (var t = 0; t<x.length; t++){
+      var b = true
+      for (var z = 0; z<open._heap.length; z++){
+        if (comparePoints(x[t], open._heap[z]))  b = false                                                                  
+      }
+      if (b){
+        var costToGoal = distance(x[t], goal)
+        var newPath = current.path.slice()
+        var distToCurrent = distance(x[t], current)
+        if (current.g + distToCurrent + costToGoal < G){
+          newPath.push({ x: x[t].x, y: x[t].y })
+          open.push({x:x[t].x, y:x[t].y, g: current.g + distToCurrent, h: costToGoal, path: newPath})                            //add x to open
+        }
+      }
+    }
+  }
+  return null
+}
+

@@ -149,7 +149,7 @@ function main () {
   const graph = buildGraph(coordinates)
   drawGraph(app.stage, graph)
   if ($('#fill').is(':checked')) drawShapes(app.stage, coordinates)
-  const path = potentialSearch(graph, coordinates[0], coordinates[1], coordinates)
+  const path = simplifiedAnyTimeRepairingAStar(graph, coordinates[0], coordinates[1], coordinates)
   if (path != null) drawPath(app.stage, path)
 
   document.addEventListener("click",function(e){

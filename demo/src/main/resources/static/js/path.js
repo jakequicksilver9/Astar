@@ -158,10 +158,9 @@ function simplifiedAnyTimeRepairingAStar (graph, srcNode, dstNode, coords) {
   //open is empty?
   while(!open.isEmpty()){                     
     var newSolution = improveSolution(open, w, G, goal, coords, graph)
-    debugger
-    if (!newSolution == null){
-      G = cost(newSolution)
-      incumbent = newSolution
+    if (newSolution != null){
+      G = newSolution.cost
+      incumbent = newSolution.data
     }
     else{
       return incumbent
@@ -180,9 +179,8 @@ function improveSolution(open , w, G, goal, coords, graph) {
 
     if (G <= current.g + w * current.h) return null
 
-    // n best == goal?
     if (directPath(goal, currentCoords, coords)) {       
-      return [...current.path,dstNode]        //end
+      return {"data":[...current.path,goal], "cost": current.g + (costToGoal * w)}        //end
     }
     
     //expand all nodes x that are neighbors of n best 

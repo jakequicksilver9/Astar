@@ -146,7 +146,7 @@ function potentialSearch (graph, srcNode, dstNode, coords) {
 
 function simplifiedAnyTimeRepairingAStar (graph, srcNode, dstNode, coords) {
   var w = $('#Cval').val() //reusing Cval input
-  var wDelta = 5 //the amount by which w is decreased in every iteration
+  var wDelta = 1 //the amount by which w is decreased in every iteration was 5
   var G = 100000 //cost of incumbent, starts at infinity(100,000 lol)
   var start = {x:srcNode.x, y:srcNode.y}
   var goal = {x:dstNode.x, y:dstNode.y}
@@ -158,13 +158,18 @@ function simplifiedAnyTimeRepairingAStar (graph, srcNode, dstNode, coords) {
   //open is empty?
   while(!open.isEmpty()){                     
     var newSolution = improveSolution(open, w, G, goal, coords, graph)
-    if (newSolution != null){
+    if (newSolution != null && w>0){
       G = newSolution.cost
       incumbent = newSolution.data
     }
     else{
       return incumbent
     }
+
+    if(isNaN(G)){  //if there is direct path from start to goal still find path
+      return incumbent
+    }
+
     w = w - wDelta
     //update open
   }
@@ -179,7 +184,7 @@ function improveSolution(open , w, G, goal, coords, graph) {
 
     if (G <= current.g + w * current.h) return null
 
-    if (directPath(goal, currentCoords, coords)) {       
+    if (directPath(goal, currentCoords, coords)) {  
       return {"data":[...current.path,goal], "cost": current.g + (costToGoal * w)}        //end
     }
     

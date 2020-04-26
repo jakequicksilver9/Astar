@@ -7,12 +7,24 @@
     <button id="run" onclick="main()">GO!</button>
     <button onclick="Clear()">CLEAR</button>
   </div>
-  <div>
-    <select id="envirnoment">
+  <div class="row">
+  <label>Enviroment: </label>
+    <select id="envirnoment" onChange="envChange()">
       <option value="1" >Figure 3.31</option>
       <option value="2" selected>New Enviroment</option>
+      <option value="3"> 100 x 100</option>
+      <option value="4"> 200 x 200</option>
+      <option value="5"> 300 x 300</option>
     </select>
-    <label>C Value: </label><input id="Cval">
+    <span style="display:none;" id="fillSelect">
+      <label>Fill %: </label>
+      <select id="fillLevel">
+        <option value="1">10%</option>
+        <option value="2">20%</option>
+        <option value="3">30%</option>
+      </select>
+    </span>
+    <label>W Value: </label><input id="Cval">
     <div>
       <label>show fill: </label><input checked id="fill" type="checkbox">
     </div>

@@ -31,7 +31,7 @@ function drawGraph (stage, graph) {
 function drawPath (stage, path) {
   if (path){
     var line = new PIXI.Graphics()
-    line.lineStyle(3, 0xffffff)
+    line.lineStyle(3, 0xffd700)
     line.moveTo(path[0].x, path[0].y)
     for (let k = 1; k < path.length; k++) {
       line.lineTo(path[k].x, path[k].y)

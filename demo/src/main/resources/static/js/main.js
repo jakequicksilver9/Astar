@@ -121,10 +121,13 @@ const enviroment2 = [
   {manual:shape6, n:4},
 ]
 
+var width = 650
+var height = 300
+
 function Create(){
   var app = new PIXI.Application({
     width: 650,
-    height: 300,
+    height: 650,
     antialias: true,
     backgroundColor:0x5CC569
   })
@@ -132,6 +135,8 @@ function Create(){
 }
 
 function main () {
+  const t0 = performance.now();
+
   switch($('#envirnoment').val()){
     case "1":{
       var coordinates = enviroment1
@@ -139,6 +144,24 @@ function main () {
     }
     case "2":{
       var coordinates = enviroment2
+      break
+    }
+    case "3":{
+      width = 200
+      height = 200
+      var coordinates = generateEnviroment();
+      break
+    }
+    case "4":{
+      width = 400
+      height = 400
+      var coordinates = generateEnviroment();
+      break
+    }
+    case "5":{
+      width = 600
+      height = 600
+      var coordinates = generateEnviroment();
       break
     }
   }
@@ -151,15 +174,68 @@ function main () {
   if ($('#fill').is(':checked')) drawShapes(app.stage, coordinates)
   const path = simplifiedAnyTimeRepairingAStar(graph, coordinates[0], coordinates[1], coordinates)
   if (path != null) drawPath(app.stage, path)
+  const t1 = performance.now()
+  var runtime = t1 - t0
+  console.log("runtime: " +  runtime)
 
-  document.addEventListener("click",function(e){
-    mouseposition = app.renderer.plugins.interaction.mouse.global;
-    var x = Math.round(mouseposition.x)
-    var y = Math.round(mouseposition.y)
-    console.log("{x: " + x + ", y: " + y + "}");
-})
+//   document.addEventListener("click",function(e){
+//     mouseposition = app.renderer.plugins.interaction.mouse.global;
+//     var x = Math.round(mouseposition.x)
+//     var y = Math.round(mouseposition.y)
+//     console.log("{x: " + x + ", y: " + y + "}");
+// })
 }
 
 function Clear(){
   $('canvas').remove()
+}
+
+function envChange(){
+  val = $('#envirnoment').val()
+  if (val == '3' || val == '4'){
+    $('#fillSelect').css("display","");
+  }else{
+    $('#fillSelect').css("display","none");
+  }
+}
+
+function generateEnviroment(){
+  var randomEnviroment = [
+    {x:5, y:5, sg:true },    //start
+    {x:width, y:height, sg:true }   //goal
+  ]
+
+  switch($('#fillLevel').val()){
+    case "1":{
+      var fill = 0.1
+      break
+    }
+    case "2":{
+      var fill = 0.2
+      break
+    }
+    case "3":{
+      var fill = 0.3
+      break
+    }
+  }
+
+  var shapeSize = 4
+  var interval = 10
+
+  for (var x  = 10; x<width-interval; x+= interval){
+    for (var y  = 10; y<height-interval; y+= interval){
+      if (Math.random() < fill){
+        var shape = [
+          {x: x - shapeSize, y: y + 1 + shapeSize},
+          {x: x + shapeSize, y: y - shapeSize},
+          {x: x - shapeSize, y: y - shapeSize},
+          {x: x + shapeSize, y: y + 1 + shapeSize},
+        ]
+        randomEnviroment.push({manual:shape,n:4})
+      }
+    }
+  }
+
+  return randomEnviroment
 }
